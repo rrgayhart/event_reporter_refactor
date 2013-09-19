@@ -3,6 +3,7 @@ require 'pry'
 require './lib/file'
 
 class EventReporter
+include EventFile
 
   def run(input)
     @input = input.chomp
@@ -18,10 +19,14 @@ class EventReporter
       else two_command(command, assertion_array)
     end
   end
+
+  def default_file
+    "event_attendees.csv"
+  end
   
   def one_command(command)
     case command
-      when "load" then return "#{command}"
+      when "load" then load_file(default_file)
       else
         return "One command but not defined"
     end
@@ -33,7 +38,7 @@ class EventReporter
         if assertion.include? ".csv"
           return "detected"
         else
-          return "#{assertion}"
+          return load_file(default_file) 
         end
       else return "unrecognized"
       end
@@ -41,6 +46,11 @@ class EventReporter
 
   def three_command
   end
-
+#-----------------------------------------------
+#file section and etc
+  def load_file(name)
+    file_name = name
+    return "#{file_name}"
+  end
 
 end

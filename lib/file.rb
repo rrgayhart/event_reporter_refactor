@@ -2,16 +2,15 @@ require 'csv'
 require 'pry'
 require './lib/err'
 
-class EventFile
+module EventFile
   
-  def initialize(name)
-    @name = name
-    load_file(name)
-  end
+ # def initialize(file, name)
+ #   @file = file
+ #   name = name
+ #   load_file(name)
+ # end
 
-  def load_file(name)
-    return "#{name}"
-  end
+
 
 end
 

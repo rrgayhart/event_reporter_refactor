@@ -55,16 +55,25 @@ class EventReporter
   def load_file(file)
     file_name = file.chomp
     @contents = CSV.read"#{file}", headers: true, header_converters: :symbol
+    clean_file
+  end
+
+  def clean_file
+    dirty = @contents
+    @clean = dirty.each do |row|
+      row[:homephone].gsub!(/[- .)()]/, "")
+      if row[:homephone].length > 10 then row[:homephone] = "0000000000"
+      elsif row[:homephone].length < 10 then row[:homephone] = "0000000000"
+      end
+      row[:zipcode].to_s.rjust(5,"0")[0..4]
+    end
     print_file
   end
 
-  def clean_file(file)
-  end
-
   def print_file
-    contents = @contents
+    clean = @clean
     print "ID\tLAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE\n"
-    contents.each do |row|
+    clean.each do |row|
       print "#{row[:id]}\t#{row[:last_name]}\t#{row[:first_name]}\t#{row[:email_address]}\t#{row[:zipcode]}\t#{row[:city]}\t#{row[:state]}\t#{row[:street]}\t#{row[:homephone]}\n"
     end
   end

@@ -1,26 +1,46 @@
 require 'csv'
 require 'pry'
+require './lib/file'
 
 class EventReporter
 
   def run(input)
     @input = input.chomp
-    return @input
+    process_input(@input)
   end
 
   def process_input(input)
-
+    input_array = input.split(" ")
+    command = input_array[0]
+    assertion_array = input_array[1..-1]
+    case assertion_array
+      when [] then one_command(command)
+      else two_command(command, assertion_array)
+    end
   end
   
-  def load(file_input)
-    if file_input == ""
-    file = default_file
-    else file = file_input
+  def one_command(command)
+    case command
+      when "load" then return "#{command}"
+      else
+        return "One command but not defined"
     end
-    @file = file
-    puts "You have now opened: #{file}"
-    @contents = CSV.read "#{file}", headers: true, header_converters: :symbol
-    #print_template
   end
+
+  def two_command(command, assertion_array)
+      assertion = assertion_array.join(" ")
+      if command == "load" 
+        if assertion.include? ".csv"
+          return "detected"
+        else
+          return "#{assertion}"
+        end
+      else return "unrecognized"
+      end
+  end
+
+  def three_command
+  end
+
 
 end

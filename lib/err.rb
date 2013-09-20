@@ -1,31 +1,51 @@
 require 'csv'
 require 'pry'
+require "./lib/help"
+require "./lib/message"
+require "./lib/file"
 
 class EventReporter
   attr_accessor :file, :queue, :contents
 
-# dummy run function for testing
-  def run(input)
-    input = input.chomp
-    process_input(input)
-  end
-#dummy run function for testing
-
-
-#----------Be sure to add this RUN back when finished testing!!
-  #def run
-  #  puts "Welcome to the Event Reporter"
-  #  print "enter command "
-  #  prompt
-  #end
-
-  def error_message
-    puts "I do not recognize this function. Please try again. Type help for a list of commands. Or exit to leave."
-    prompt
+  def welcome
+    puts "Welcome to the Event Reporter"
+    run
   end
 
-#----------Be sure to add the commented lines back into prompte
-#----------When done testing
+  def run
+    input = ""
+    while input != "exit"
+      puts ""
+      printf "enter command"
+      input = gets.chomp
+      process_input(input)
+    end
+  end
+
+  def process_input(input)
+    input_array = input.downcase.split(" ")
+    command = input_array[0]
+    directive = input_array[1..-1]
+    case command
+      when "help" then Help.new(directive).help_router
+      when "load" then Eventfile.new(directive).load_router
+      when "queue" then queue_router(directive)
+      when "find" then find_router(directive)
+      else return Message.new.error
+    end
+  end
+
+
+
+  def queue_router(input_array)
+    return input_array
+  end
+
+  def find_router(input_array)
+    return input_array
+  end
+
+#----------------OLD COMMAND LIST---------------------------
 
   def prompt
     return "End of method"
@@ -34,16 +54,6 @@ class EventReporter
   #  process_input(input)
   end
 
-  def process_input(input)
-    input_array = input.split(" ")
-    command = input_array[0]
-    assertion_array = input_array[1..-1]
-    case assertion_array
-      when [] then one_command(command)
-      else two_command(command, assertion_array)
-    end
-  end
-  
   def one_command(command)
       if command == "load" 
         load_file(default_file)
@@ -54,7 +64,7 @@ class EventReporter
         end
       elsif "exit" then print "Goodbye!" "\n"
       else
-        error_message
+        Message.new.error
       end
   end
 
@@ -75,16 +85,16 @@ class EventReporter
         if command_list.include? assertion[0..-1]
           puts "#{assertion}: #{command_list[assertion]}"
         else 
-          print error_message
+          print Message.new.error
         end
       elsif command == "queue"
         if assertion == "clear"
           clear_queue
         elsif assertion == "print"
           print_queue
-        else error_message
+        else Message.new.error
         end
-      else print error_message
+      else print Message.new.error
       end
   end
 
@@ -188,10 +198,6 @@ class EventReporter
     attribute_list.each do |a|
       print "'#{a}'"
     end
-  end
-
-  def command_list
-    {"load" => "Loads a CSV file that can be searched", "queue count" => "Counts the records in the queue", "queue clear" => "Clears your queue", "queue print" => "Prints your queue", "queue save to" => "Saves your queue to the specified queue", "find" => "Finds records based on your specified search attributes.", "exit" => "Exits the programm."}
   end
 
 end

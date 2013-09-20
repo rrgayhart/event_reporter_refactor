@@ -1,18 +1,26 @@
 require 'csv'
 require 'pry'
-require './lib/err'
 
-module EventFile
+class EventFile
   
- # def initialize(file, name)
- #   @file = file
- #   name = name
- #   load_file(name)
- # end
+  def initialize(file, name)
+    @file = file
+    @name
+  end
 
-
-
+  def read_file
+    print @file
+  end
 end
+
+def read_name
+  print @name
+end
+
+m=EventFile.new("noo", "ber")
+m.read_file
+m.read_name
+
 
   #def load(file_input)
   #  if file_input == ""

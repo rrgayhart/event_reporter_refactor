@@ -4,21 +4,34 @@ require 'pry'
 class EventReporter
   attr_accessor :file, :queue, :contents
 
-  def run
-    puts "Welcome to the Event Reporter"
-    print "enter command "
-    prompt
+# dummy run function for testing
+  def run(input)
+    input = input.chomp
+    process_input(input)
   end
+#dummy run function for testing
+
+
+#----------Be sure to add this RUN back when finished testing!!
+  #def run
+  #  puts "Welcome to the Event Reporter"
+  #  print "enter command "
+  #  prompt
+  #end
 
   def error_message
     puts "I do not recognize this function. Please try again. Type help for a list of commands. Or exit to leave."
     prompt
   end
 
+#----------Be sure to add the commented lines back into prompte
+#----------When done testing
+
   def prompt
-    print "> "
-    input = gets.chomp.to_s
-    process_input(input)
+    return "End of method"
+  #  print "> "
+  #  input = gets.chomp.to_s
+  #  process_input(input)
   end
 
   def process_input(input)
@@ -184,8 +197,8 @@ class EventReporter
 end
 
 
-e = EventReporter.new
-e.run
+#e = EventReporter.new
+#e.run
 #e.process_input("find first_name alice")
 #e.save_to("tester.csv")
 #e.print_file("first_name")

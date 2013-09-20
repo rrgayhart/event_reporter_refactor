@@ -1,0 +1,7 @@
+Study the collect method and try to replace
+
+Remove the one command/ two command and break back out into smaller processing to type commanders
+
+Break down each method to be as small as I can get it
+
+Try splitting Help into its own class

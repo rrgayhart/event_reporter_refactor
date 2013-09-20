@@ -2,6 +2,10 @@ require 'csv'
 require 'pry'
 
 class EventReporter
+
+  def is_file?
+    @is_file = []
+  end
   
   def test
     input = gets.chomp
@@ -22,17 +26,12 @@ class EventReporter
       else two_command(command, assertion_array)
     end
   end
-
-  def default_file
-    default = "event_attendees.csv"
-    return default.chomp
-  end
   
   def one_command(command)
     case command
       when "load" then load_file(default_file)
       else
-        return "One command but not defined"
+        puts "One command but not defined"
     end
   end
 
@@ -44,17 +43,31 @@ class EventReporter
         else
           load_file(default_file) 
         end
-      else return "unrecognized"
+      elsif command == "find"
+        load_file('event_attendees.csv')
+        three_command(command, assertion_array)
+      else puts assertion_array[2]
       end
   end
 
-  def three_command
+  def three_command(command, assertion)
+    if command == "find"
+      attribute = assertion[0]
+      criteria = assertion[1..-1].join(" ")
+      find_by(attribute, criteria)
+    end
   end
 
 #-----------------------------------------------
 #file section and etc
+
+  def default_file
+    default = "event_attendees.csv"
+    return default.chomp
+  end
+
   def load_file(file)
-    file_name = file.chomp
+    @file_name = file.chomp
     @contents = CSV.read"#{file}", headers: true, header_converters: :symbol
     clean_file
   end
@@ -75,9 +88,11 @@ class EventReporter
     searchable = @clean
     @queue = []
     searchable.each do |row|
-      if query.upcase == row[attribute].upcase
+      if row[attribute] == nil
+        row[attribute] = ""
+      elsif query.upcase == row[attribute].upcase
         @queue << row
-    end
+      end
     end
     print_file
   end
@@ -96,4 +111,4 @@ end
 
 e = EventReporter.new
 e.load_file('event_attendees.csv')
-e.find_by('first_name', 'alice')
+e.process_input("find homephone 000000000")

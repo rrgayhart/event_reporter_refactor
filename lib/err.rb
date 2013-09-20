@@ -4,9 +4,21 @@ require 'pry'
 class EventReporter
   attr_accessor :file, :queue, :contents
 
-  def run(input)
-    @input = input.chomp
-    process_input(@input)
+  def run
+    puts "Welcome to the Event Reporter"
+    print "enter command "
+    prompt
+  end
+
+  def error_message
+    puts "I do not recognize this function. Please try again. Type help for a list of commands. Or exit to leave."
+    prompt
+  end
+
+  def prompt
+    print "> "
+    input = gets.chomp.to_s
+    process_input(input)
   end
 
   def process_input(input)
@@ -27,8 +39,9 @@ class EventReporter
         command_list.each do |command, description|
           puts command
         end
+      elsif "exit" then print "Goodbye!" "\n"
       else
-        puts "One command but not defined"
+        error_message
       end
   end
 
@@ -49,9 +62,16 @@ class EventReporter
         if command_list.include? assertion[0..-1]
           puts "#{assertion}: #{command_list[assertion]}"
         else 
-          print "error"
+          print error_message
         end
-      else print "error"
+      elsif command == "queue"
+        if assertion == "clear"
+          clear_queue
+        elsif assertion == "print"
+          print_queue
+        else error_message
+        end
+      else print error_message
       end
   end
 
@@ -165,7 +185,7 @@ end
 
 
 e = EventReporter.new
-#e.list_attributes
+e.run
 #e.process_input("find first_name alice")
 #e.save_to("tester.csv")
 #e.print_file("first_name")

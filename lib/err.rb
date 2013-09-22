@@ -3,6 +3,7 @@ require 'pry'
 require "./lib/help"
 require "./lib/message"
 require "./lib/file"
+require "./lib/queue"
 
 class EventReporter
   attr_accessor :file, :queue, :contents

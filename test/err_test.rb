@@ -50,6 +50,11 @@ class ERRTest < MiniTest::Test
     assert_equal [], response
   end
 
+  def test_queue_should_have_default
+    response = Queue.new("")
+    assert_equal "boobs", response
+  end
+
 
   #------------OLD TESTS LINE ---------------#
 

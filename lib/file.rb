@@ -2,24 +2,32 @@ require 'csv'
 require 'pry'
 
 class Eventfile
-  attr_accessor :input
+  attr_accessor :file
+
+  def default_file
+    "./lib/event_attendees.csv".chomp
+  end
+###---- WILL NEED TO GET RID OF THE ./lib after testing!! --------
 
   def initialize(input)
-    @input = input
+    @input = input.join(" ")
+    @file ||= default_file
   end
+
 
   def load_router
-    directive = input.join(" ")
-    if input == [] 
-      return load
-    else
-      #if command_list.include? directive
-      #  return "#{directive}: #{command_list[directive]}"
-      #else
-      #  Message.new.error
-      #end
+    unless @input == "" 
+      @file = @input
     end
+    load_file
+###----------------Consider putting a rescue in here incase file does not exist----------#
   end
 
+  def load_file
+    @contents = CSV.read"#{file}", headers: true, header_converters: :symbol
+    return @contents
+    #clean_file
+  end
+#Next step is to add the clean_file methods and then correct the nameing on file/input/contents - reassign!
 end
   

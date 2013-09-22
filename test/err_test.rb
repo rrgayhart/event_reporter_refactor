@@ -35,10 +35,14 @@ class ERRTest < MiniTest::Test
     assert_equal [], response
   end
 
-  def test_load_should_be_recognized
-    skip
+  def test_default_file_should_be_recognized
     response = @event.process_input('load')
-    assert_equal [], response
+    assert_equal "event_attendees.csv", response
+  end
+
+  def test_csv_file_should_be_loaded
+    response = @event.process_input('load ./lib/test.csv')
+    assert_equal "test.csv", response
   end
 
   def test_find_should_be_recognized

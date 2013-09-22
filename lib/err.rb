@@ -36,7 +36,6 @@ class EventReporter
   end
 
 
-
   def queue_router(input_array)
     return input_array
   end
